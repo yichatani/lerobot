@@ -282,7 +282,12 @@ def train(cfg: TrainPipelineConfig):
             if wandb_logger:
                 wandb_log_dict = train_tracker.to_dict()
                 if output_dict:
-                    wandb_log_dict.update(output_dict)
+                    # wandb_log_dict.update(output_dict)
+                    safe_output_dict = {
+                        k: (v.detach().mean().item() if torch.is_tensor(v) else v)
+                        for k, v in output_dict.items()
+                    }
+                    wandb_log_dict.update(safe_output_dict)
                 wandb_logger.log_dict(wandb_log_dict, step)
             train_tracker.reset_averages()
 
