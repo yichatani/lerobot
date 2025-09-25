@@ -298,8 +298,8 @@ def train(cfg: TrainPipelineConfig):
                 checkpoint_dir, step, cfg, policy, optimizer, lr_scheduler, preprocessor, postprocessor
             )
             update_last_checkpoint(checkpoint_dir)
-            if wandb_logger:
-                wandb_logger.log_policy(checkpoint_dir)
+            # if wandb_logger:
+            #     wandb_logger.log_policy(checkpoint_dir)
 
         if cfg.env and is_eval_step:
             step_id = get_step_identifier(step, cfg.steps)
