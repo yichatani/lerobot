@@ -11,13 +11,28 @@ fi
 
 OUTPUT_DIR="outputs/train/my_smolvla_${SUFFIX}"
 
+## Initial Test for lerobot/svla_so101_pickplace
+# python lerobot/scripts/train.py \
+#   --dataset.repo_id=lerobot/svla_so101_pickplace \
+#   --batch_size=64 \
+#   --steps=200000 \
+#   --output_dir="${OUTPUT_DIR}" \
+#   --job_name="my_smolvla_training_${SUFFIX}" \
+#   --policy.type=smolvla \
+#   --policy.repo_id=yichat/my_smolvla \
+#   --policy.device=cuda \
+#   --wandb.enable=true
+
+# Run on libero
 python lerobot/scripts/train.py \
-  --dataset.repo_id=lerobot/svla_so101_pickplace \
+  --dataset.repo_id=HuggingFaceVLA/smol-libero \
+  --env.type=libero \
+  --env.task=libero_10 \
   --batch_size=64 \
   --steps=200000 \
   --output_dir="${OUTPUT_DIR}" \
   --job_name="my_smolvla_training_${SUFFIX}" \
   --policy.type=smolvla \
-  --policy.repo_id=yichat/my_smolvla \
+  --policy.repo_id=yichat/libero-smolvla-run \
   --policy.device=cuda \
   --wandb.enable=true
