@@ -18,6 +18,7 @@ import time
 from contextlib import nullcontext
 from pprint import pformat
 from typing import Any
+from tqdm import tqdm 
 
 import torch
 from termcolor import colored
@@ -252,7 +253,8 @@ def train(cfg: TrainPipelineConfig):
     )
 
     logging.info("Start offline training on a fixed dataset")
-    for _ in range(step, cfg.steps):
+    # for _ in range(step, cfg.steps):
+    for _ in tqdm(range(step, cfg.steps), initial=step, total=cfg.steps, desc="Training"):
         start_time = time.perf_counter()
         batch = next(dl_iter)
         batch = preprocessor(batch)
