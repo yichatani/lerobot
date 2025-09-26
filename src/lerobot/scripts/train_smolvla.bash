@@ -25,7 +25,8 @@ OUTPUT_DIR="outputs/train/my_smolvla_${SUFFIX}"
 
 # Run on libero
 python lerobot/scripts/train.py \
-  --dataset.repo_id=HuggingFaceVLA/smol-libero \
+  --dataset.repo_id=local-libero \
+  --dataset.root=/home/ani/libero \
   --env.type=libero \
   --env.task=libero_10 \
   --batch_size=64 \
