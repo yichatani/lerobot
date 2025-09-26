@@ -18,6 +18,7 @@ import time
 from contextlib import nullcontext
 from pprint import pformat
 from typing import Any
+from tqdm import tqdm 
 
 import torch
 from termcolor import colored
@@ -252,7 +253,8 @@ def train(cfg: TrainPipelineConfig):
     )
 
     logging.info("Start offline training on a fixed dataset")
-    for _ in range(step, cfg.steps):
+    # for _ in range(step, cfg.steps):
+    for _ in tqdm(range(step, cfg.steps), initial=step, total=cfg.steps, desc="Training"):
         start_time = time.perf_counter()
         batch = next(dl_iter)
         batch = preprocessor(batch)
@@ -282,7 +284,12 @@ def train(cfg: TrainPipelineConfig):
             if wandb_logger:
                 wandb_log_dict = train_tracker.to_dict()
                 if output_dict:
-                    wandb_log_dict.update(output_dict)
+                    # wandb_log_dict.update(output_dict)
+                    safe_output_dict = {
+                        k: (v.detach().mean().item() if torch.is_tensor(v) else v)
+                        for k, v in output_dict.items()
+                    }
+                    wandb_log_dict.update(safe_output_dict)
                 wandb_logger.log_dict(wandb_log_dict, step)
             train_tracker.reset_averages()
 
@@ -293,8 +300,8 @@ def train(cfg: TrainPipelineConfig):
                 checkpoint_dir, step, cfg, policy, optimizer, lr_scheduler, preprocessor, postprocessor
             )
             update_last_checkpoint(checkpoint_dir)
-            if wandb_logger:
-                wandb_logger.log_policy(checkpoint_dir)
+            # if wandb_logger:
+            #     wandb_logger.log_policy(checkpoint_dir)
 
         if cfg.env and is_eval_step:
             step_id = get_step_identifier(step, cfg.steps)
