@@ -24,7 +24,7 @@ OUTPUT_DIR="outputs/train/my_smolvla_${SUFFIX}"
 #   --wandb.enable=true
 
 # Run on libero
-python lerobot/scripts/train.py \
+python lerobot/scripts/lerobot_train.py \
   --dataset.repo_id=local-libero \
   --dataset.root=/home/ani/libero \
   --env.type=libero \
