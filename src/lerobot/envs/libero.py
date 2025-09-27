@@ -29,6 +29,7 @@ from gymnasium import spaces
 from libero.libero import benchmark, get_libero_path
 from libero.libero.envs import OffScreenRenderEnv
 from robosuite.utils.transform_utils import quat2axisangle
+from termcolor import cprint
 
 
 def _parse_camera_names(camera_name: str | Sequence[str]) -> list[str]:
@@ -359,6 +360,10 @@ def create_libero_envs(
 
         if not selected:
             raise ValueError(f"No tasks selected for suite '{suite_name}' (available: {total}).")
+
+        selected = [0,]
+        cprint(f"Pick task orders {selected=}","green")
+        # exit()
 
         for tid in selected:
             fns = _make_env_fns(
