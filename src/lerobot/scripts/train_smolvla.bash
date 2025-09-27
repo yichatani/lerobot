@@ -24,11 +24,13 @@ OUTPUT_DIR="outputs/train/my_smolvla_${SUFFIX}"
 #   --wandb.enable=true
 
 # Run on libero
+# --env.task=libero_10 \
+# --env.task=libero_spatial \
 python lerobot/scripts/lerobot_train.py \
   --dataset.repo_id=local-libero \
   --dataset.root=/home/ani/libero \
   --env.type=libero \
-  --env.task=libero_10 \
+  --env.task=libero_spatial \
   --batch_size=64 \
   --steps=200000 \
   --output_dir="${OUTPUT_DIR}" \
