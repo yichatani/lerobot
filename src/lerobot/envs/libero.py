@@ -361,7 +361,7 @@ def create_libero_envs(
         if not selected:
             raise ValueError(f"No tasks selected for suite '{suite_name}' (available: {total}).")
 
-        selected = [0,]
+        selected = [7,]
         cprint(f"Pick task orders {selected=}","green")
         # exit()
 

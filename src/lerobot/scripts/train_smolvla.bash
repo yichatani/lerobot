@@ -48,7 +48,7 @@ OUTPUT_DIR="outputs/train/my_smolvla_${SUFFIX}"
 python lerobot/scripts/lerobot_train.py \
   --dataset.repo_id=yichat/smol-libero \
   --env.type=libero \
-  --env.task=libero_spatial \
+  --env.task=libero_10 \
   --batch_size=64 \
   --steps=200000 \
   --output_dir="${OUTPUT_DIR}" \
