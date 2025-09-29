@@ -215,7 +215,7 @@ class LiberoEnv(gym.Env):
         images = {}
         for camera_name in self.camera_name:
             image = raw_obs[camera_name]
-            image = image[::-1, ::-1]  # rotate 180 degrees
+            image = image[::-1, ::1]  # flip vertically, typical for smol-libero, and libero should be image = image[::-1, ::-1]
             images[self.camera_name_mapping[camera_name]] = image
         state = np.concatenate(
             (
