@@ -30,6 +30,8 @@ from libero.libero import benchmark, get_libero_path
 from libero.libero.envs import OffScreenRenderEnv
 from robosuite.utils.transform_utils import quat2axisangle
 from termcolor import cprint
+import matplotlib.pyplot as plt
+import cv2
 
 
 def _parse_camera_names(camera_name: str | Sequence[str]) -> list[str]:
@@ -213,7 +215,7 @@ class LiberoEnv(gym.Env):
         images = {}
         for camera_name in self.camera_name:
             image = raw_obs[camera_name]
-            image = image[::-1, ::-1]  # rotate 180 degrees
+            image = image[::-1, ::1]  # flip vertically, typical for smol-libero, and libero should be image = image[::-1, ::-1]
             images[self.camera_name_mapping[camera_name]] = image
         state = np.concatenate(
             (
@@ -264,6 +266,8 @@ class LiberoEnv(gym.Env):
         info["is_success"] = is_success
 
         observation = self._format_raw_obs(raw_obs)
+        # vis_obs_images(observation)
+        # exit()
         if done:
             self.reset()
             info.update(
@@ -361,7 +365,7 @@ def create_libero_envs(
         if not selected:
             raise ValueError(f"No tasks selected for suite '{suite_name}' (available: {total}).")
 
-        selected = [0,]
+        selected = [1,]
         cprint(f"Pick task orders {selected=}","green")
         # exit()
 
@@ -380,3 +384,24 @@ def create_libero_envs(
 
     # return plain dicts for predictability
     return {suite: dict(task_map) for suite, task_map in out.items()}
+
+
+def vis_obs_images(obs: dict[str, Any]):
+    # print(f"{obs=}") 
+
+    img1 = obs["pixels"]["image"]
+    img2 = obs["pixels"]["image2"]
+
+    plt.figure(figsize=(8, 4))
+
+    plt.subplot(1, 2, 1)
+    plt.imshow(img1)
+    plt.title("image (agentview)")
+    plt.axis("off")
+
+    plt.subplot(1, 2, 2)
+    plt.imshow(img2)
+    plt.title("image2 (eye-in-hand)")
+    plt.axis("off")
+
+    plt.show()
